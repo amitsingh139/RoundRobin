@@ -7,7 +7,7 @@ class player{
 		char name[30];
 		int wins=0;
 		int points=0;
-		float nrr=0.0;
+		float np=0.0;
 		void enterData();
 		void showData();
 };
@@ -16,7 +16,7 @@ void player :: enterData(){
 	cin>>name;
 }
 void player :: showData(){
-	cout<<name<<"\t"<<wins<<"\t"<<nrr<<endl;
+	cout<<name<<"\t"<<wins<<"\t"<<np<<endl;
 }
 void display(player p[],int n){
 	for(int i=0;i<n;i++)
@@ -54,7 +54,7 @@ void checkResult(player p[],int n,int res[]){
 	int max=0;
 	vector<pair<pair<int,int>,int>> vec;
 	for(int i=0;i<n;i++)
-		vec.push_back({{p[i].wins,p[i].nrr},i});
+		vec.push_back({{p[i].wins,p[i].np},i});
 
 	sort(vec.begin(),vec.end(),comp);
 
@@ -62,19 +62,19 @@ void checkResult(player p[],int n,int res[]){
 	res[1]=vec[1].second;
 }
 
-void nrr(int x,int y,player p[],int i,int j){
+void np(int x,int y,player p[],int i,int j){
 	float d;
 	if(x>y){
 		d=(float)x/(float)y;
-		p[i].nrr+=d;
-		p[j].nrr-=d;
+		p[i].np+=d;
+		p[j].np-=d;
 	}
 	else{
 		d=(float)y/(float)x;
-		p[i].nrr-=d;
-		p[j].nrr+=d;
+		p[i].np-=d;
+		p[j].np+=d;
 	}
-	cout<<"nrr : "<<d<<endl;
+	//cout<<"np : "<<d<<endl;
 }
 
 void round_robin(player p[],int n){
@@ -113,14 +113,14 @@ void round_robin(player p[],int n){
                         cin>>val2;
                         p[j].points+=val2;
 
-			nrr(val1,val2,p,i,j);
+			np(val1,val2,p,i,j);
 			--t;
 	}
 	cout<<endl;
 	
 	cout<<"League Stage is completed "<<endl;
 
-	cout<<"Name\t"<<"Wins\t"<<"NRR"<<endl;
+	cout<<"Name\t"<<"Wins\t"<<"NP"<<endl;
 	display(p,n);
 	
 
