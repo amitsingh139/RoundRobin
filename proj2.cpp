@@ -16,7 +16,9 @@ void player :: enterData(){
 	cin>>name;
 }
 void player :: showData(){
-	cout<<name<<"\t"<<wins<<"\t"<<nrr<<endl;
+	cout<<name<<"\t"<<wins<<"\t";
+        printf("%.2f",nrr);
+        cout<<endl;
 }
 void display(player p[],int n){
 	for(int i=0;i<n;i++)
