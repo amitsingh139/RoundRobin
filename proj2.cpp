@@ -7,7 +7,7 @@ class player{
 		char name[30];
 		int wins=0;
 		int points=0;
-		float np=0.0;
+		float nrr=0.0;
 		void enterData();
 		void showData();
 };
@@ -16,7 +16,7 @@ void player :: enterData(){
 	cin>>name;
 }
 void player :: showData(){
-	cout<<name<<"\t"<<wins<<"\t"<<np<<endl;
+	cout<<name<<"\t"<<wins<<"\t"<<nrr<<endl;
 }
 void display(player p[],int n){
 	for(int i=0;i<n;i++)
@@ -51,30 +51,43 @@ bool comp(pair<pair<int,int>,int> &x,pair<pair<int,int>,int> &y){
 }
 
 void checkResult(player p[],int n,int res[]){
-	int max=0;
 	vector<pair<pair<int,int>,int>> vec;
 	for(int i=0;i<n;i++)
-		vec.push_back({{p[i].wins,p[i].np},i});
+		vec.push_back({{p[i].wins,p[i].nrr},i});
 
 	sort(vec.begin(),vec.end(),comp);
 
 	res[0]=vec[0].second;
 	res[1]=vec[1].second;
+	res[2]=vec[2].second;
 }
 
-void np(int x,int y,player p[],int i,int j){
+void nrr(int x,int y,player p[],int i,int j){
 	float d;
-	if(x>y){
-		d=(float)x/(float)y;
-		p[i].np+=d;
-		p[j].np-=d;
+        if((x == 7 && y==0) ||(x==0 && y==7)){
+		d=2.0;
+		if(x>y){
+			p[i].nrr+=d;
+		        p[j].nrr-=d;
+	        }
+	        else{
+		        p[i].nrr-=d;
+		        p[j].nrr+=d;
+	        }
 	}
-	else{
-		d=(float)y/(float)x;
-		p[i].np-=d;
-		p[j].np+=d;
+        else{
+		if(x>y){
+		       d=((float)x/(float)y)/10.0;
+		       p[i].nrr+=d;
+		       p[j].nrr-=d;
+	        }
+	        else{
+		       d=((float)y/(float)x)/10.0;
+		       p[i].nrr-=d;
+		       p[j].nrr+=d;
+	        }
 	}
-	//cout<<"np : "<<d<<endl;
+	cout<<"nrr : "<<d<<endl;
 }
 
 void round_robin(player p[],int n){
@@ -113,20 +126,31 @@ void round_robin(player p[],int n){
                         cin>>val2;
                         p[j].points+=val2;
 
-			np(val1,val2,p,i,j);
+			nrr(val1,val2,p,i,j);
 			--t;
 	}
 	cout<<endl;
 	
 	cout<<"League Stage is completed "<<endl;
 
-	cout<<"Name\t"<<"Wins\t"<<"NP"<<endl;
+	cout<<"Name\t"<<"Wins\t"<<"NRR"<<endl;
 	display(p,n);
 	
 
-	int res[2]={0,0};
+	int res[3]={0,0,0};
 	checkResult(p,n,res);
-	cout<<"Final match is between "<<p[res[0]].name <<" & "<<p[res[1]].name<<endl;
+	
+	int l;
+	cout<<"\nEliminator Match is between "<<p[res[1]].name<<" & "<<p[res[2]].name<<endl;
+	cout<<"Who wins : ";
+	cin>>l;
+	int f2;
+	if(l==1)
+		f2=res[1];
+	else
+		f2=res[2];
+
+	cout<<"\nFinal match is between "<<p[res[0]].name <<" & "<<p[f2].name<<endl;
 	
 }
 
